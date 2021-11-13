@@ -3,29 +3,32 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ASP_Trello_Identity</title>
+    <title>@ViewData["Title"] - Drello</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="shortcut icon" href="~/favicon.ico" />
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ASP_Trello_Identity</a>
+                <div style="display: flex; width: 110px;" class="ml-0">
+                    <svg width="32" height="32" id="eR8aXFi07Kc1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"><defs><linearGradient id="eR8aXFi07Kc2-fill" x1="0.5" y1="0" x2="0.5" y2="1" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="matrix(1 0 0 1 0 0)"><stop id="eR8aXFi07Kc2-fill-0" offset="0%" stop-color="rgb(173,255,47)" /><stop id="eR8aXFi07Kc2-fill-1" offset="100%" stop-color="rgb(47,255,255)" /></linearGradient></defs><rect id="eR8aXFi07Kc2" width="32" height="32" rx="3" ry="3" fill="url(#eR8aXFi07Kc2-fill)" stroke="none" stroke-width="0" /><rect id="eR8aXFi07Kc3" width="10.998895" height="26.042545" rx="1" ry="1" transform="matrix(1 0 0 1 2.982107 3.049951)" fill="rgb(255,255,255)" stroke="none" stroke-width="0" /><rect id="eR8aXFi07Kc4" width="11.56658" height="17.030546" rx="1" ry="1" transform="matrix(0.92638 0 0 1 17.883837 3.049951)" fill="rgb(255,255,255)" stroke="none" stroke-width="0" /></svg>
+                    <h3 style="margin-left: 3px; margin-top: 2px;">Drello</h3>
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="ml-auto">
+                    @*<ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                    </ul>
+                    </ul>*@
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -37,7 +40,7 @@
         </main>
     </div>
 
-    @*<footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - ASP_Trello_Identity - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -45,6 +48,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)*@
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

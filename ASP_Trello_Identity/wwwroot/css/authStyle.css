@@ -17,3 +17,8 @@
 .btn {
     font-weight: 600;
 }
+
+.emailInput {
+    pointer-events: none; 
+    background-color: rgb(235, 235, 235);
+}

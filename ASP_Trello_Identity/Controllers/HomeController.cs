@@ -1,4 +1,6 @@
-﻿using ASP_Trello_Identity.Models;
+﻿using ASP_Trello_Identity.Data;
+using ASP_Trello_Identity.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,10 +14,15 @@ namespace ASP_Trello_Identity.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger,
+            SignInManager<ApplicationUser> signInManager)
         {
             _logger = logger;
+            _signInManager = signInManager;
+            _signInManager.SignOutAsync();
         }
 
         public IActionResult Index()

@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 *.json
 /Migrations
+/Data
+/ASP_Trello_Identity/Data

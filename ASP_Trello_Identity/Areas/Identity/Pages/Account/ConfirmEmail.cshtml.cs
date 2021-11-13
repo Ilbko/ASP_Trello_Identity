@@ -8,7 +8,9 @@ using ASP_Trello_Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
@@ -32,12 +34,6 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            internal void InputEmail(string Email) => this.Email = Email;
-
-            [Required]
-            [EmailAddress]
-            public string Email { get; private set; }
-
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
@@ -56,11 +52,24 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
                 return NotFound($"Пользователь не найден.");
             }
 
-            Input.InputEmail(user.Email);
+            if (user.PasswordHash != null)
+            {
+                return NotFound("Вы уже подтвердили свой пароль.");
+            }
 
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            HttpContext.Session.SetString("userId", userId);
+            HttpContext.Session.SetString("code", code);
+                      
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            var user = await _userManager.FindByIdAsync(HttpContext.Session.GetString("userId"));
+            var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(HttpContext.Session.GetString("code")));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            await _userManager.ResetPasswordAsync(user, code, Input.Password);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            await _userManager.ResetPasswordAsync(user, token, Input.Password);
             await _signInManager.SignInAsync(user, isPersistent: true);
 
             return Redirect("~/Work/Workspace");

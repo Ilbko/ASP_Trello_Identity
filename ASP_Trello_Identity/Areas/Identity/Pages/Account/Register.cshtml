@@ -21,7 +21,7 @@
             @*<button type="submit" asp-page-handler="OnPostAsync" class="btn btn-success" style="width: 100%">Зарегистрироваться</button>*@
             <button type="submit" class="btn btn-success" style="width: 100%">Зарегистрироваться</button>
             <hr />
-            <a class="redirectLink mb-2" href="@Url.Action("Login", "Auth")">Уже есть аккаунт? Войти</a>
+            <a class="redirectLink mb-2" href="@Url.Action("Identity/Account/Login", "")">Уже есть аккаунт? Войти</a>
         </form>
     </div>
 </body>

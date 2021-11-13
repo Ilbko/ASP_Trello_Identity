@@ -12,15 +12,34 @@
         <form method="post">
             <label class="headLabel mb-4">Регистрация аккаунта</label>
             <div class="input-group mb-3">
-                <input disabled="disabled" asp-for="Input.Email" type="text" class="form-control" value="@Model.Input.Email" />
-                <span asp-validation-for="Input.Email"></span>
-            </div>
-            <div class="input-group mb-3">
-                <input asp-for="Input.Password" type="text" class="form-control" placeholder="Введите пароль">
+                <input asp-for="Input.Password" type="password" class="form-control" placeholder="Введите пароль">
             </div>
             <button type="submit" class="btn btn-success" style="width: 100%">Зарегистрироваться</button>
             <hr />
-            <a class="redirectLink mb-2" href="@Url.Action("Login", "Auth")">Уже есть аккаунт? Войти</a>
+            <a class="redirectLink mb-2" href="@Url.Action("Identity/Account/Login", "")">Уже есть аккаунт? Войти</a>
+            @*<label>@Model.code</label>
+            <label>@Model.userId</label>*@ 
         </form>
     </div>
 </body>
+
+@*@section Scripts
+{
+    <script>
+        function Verify() {
+            $.ajax({
+                type: "post",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                success: function (data) {
+                    $("label").html(data);
+                },
+                error: function () {
+                    alert("Произошла ошибка.");
+                }
+            });
+        }
+    </script>
+}*@
