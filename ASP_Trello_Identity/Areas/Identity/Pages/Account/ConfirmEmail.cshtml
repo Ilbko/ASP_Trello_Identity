@@ -1,7 +1,26 @@
 ﻿@page
 @model ConfirmEmailModel
 @{
-    ViewData["Title"] = "Confirm email";
+    ViewData["Title"] = "SignUp";
+    Layout = "_AuthLayout";
 }
 
-<h1>@ViewData["Title"]</h1>
+<link href="~/css/authStyle.css" rel="stylesheet" />
+
+<body>
+    <div class="container text-center">
+        <form method="post">
+            <label class="headLabel mb-4">Регистрация аккаунта</label>
+            <div class="input-group mb-3">
+                <input disabled="disabled" asp-for="Input.Email" type="text" class="form-control" value="@Model.Input.Email" />
+                <span asp-validation-for="Input.Email"></span>
+            </div>
+            <div class="input-group mb-3">
+                <input asp-for="Input.Password" type="text" class="form-control" placeholder="Введите пароль">
+            </div>
+            <button type="submit" class="btn btn-success" style="width: 100%">Зарегистрироваться</button>
+            <hr />
+            <a class="redirectLink mb-2" href="@Url.Action("Login", "Auth")">Уже есть аккаунт? Войти</a>
+        </form>
+    </div>
+</body>

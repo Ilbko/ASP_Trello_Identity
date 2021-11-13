@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using ASP_Trello_Identity.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,20 +20,17 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            ILogger<RegisterModel> logger,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
             IEmailSender emailSender)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
+            _userManager = userManager;
             _emailSender = emailSender;
         }
 
@@ -41,73 +39,43 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
         public class InputModel
         {
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-        }
-
-        public async Task OnGetAsync(string returnUrl = null)
-        {
-            ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            public string FullName { get; set; }
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                Random r = new Random();
+                var user = new ApplicationUser { UserName = "user" + r.Next(10000000, 99999999), Email = Input.Email, FullName = Input.FullName };
+                var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
+                        "",
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Подтверждение почты",
+                        $"Подтвердите свою почту для аккаунта Drello по ссылке: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}</a>" +
+                        $"<svg id=\"eR8aXFi07Kc1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink \" viewBox=\"0 0 32 32\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\"><defs><linearGradient id=\"eR8aXFi07Kc2-fill\" x1=\"0.5\" y1=\"0\" x2=\"0.5\" y2=\"1\" spreadMethod=\"pad\" gradientUnits=\"objectBoundingBox\" gradientTransform=\"matrix(1 0 0 1 0 0)\"><stop id=\"eR8aXFi07Kc2-fill-0\" offset=\"0%\" stop-color=\"rgb(173,255,47)\"/><stop id=\"eR8aXFi07Kc2-fill-1\" offset=\"100%\" stop-color=\"rgb(47,255,255)\"/></linearGradient></defs><rect id=\"eR8aXFi07Kc2\" width=\"32\" height=\"32\" rx=\"3\" ry=\"3\" fill=\"url(#eR8aXFi07Kc2-fill)\" stroke=\"none\" stroke-width=\"0\"/><rect id=\"eR8aXFi07Kc3\" width=\"10.998895\" height=\"26.042545\" rx=\"1\" ry=\"1\" transform=\"matrix(1 0 0 1 2.982107 3.049951)\" fill=\"rgb(255,255,255)\" stroke=\"none\" stroke-width=\"0\"/><rect id=\"eR8aXFi07Kc4\" width=\"11.56658\" height=\"17.030546\" rx=\"1\" ry=\"1\" transform=\"matrix(0.92638 0 0 1 17.883837 3.049951)\" fill=\"rgb(255,255,255)\" stroke=\"none\" stroke-width=\"0\"/></svg>"
+                        );
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return Redirect("~/Work/Workspace");
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

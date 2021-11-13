@@ -1,0 +1,19 @@
+﻿.container {
+    width: 20rem;
+    background-color: rgb(235, 235, 235);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.headLabel {
+    font-weight: 600;
+    color: rgb(0, 63, 0);
+}
+
+.redirectLink {
+    display: block;
+}
+
+.btn {
+    font-weight: 600;
+}
