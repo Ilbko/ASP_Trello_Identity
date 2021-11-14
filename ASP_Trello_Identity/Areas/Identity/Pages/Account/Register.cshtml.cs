@@ -78,7 +78,7 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
                     SendEmail(Input.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return Redirect("~/Work/Workspace");
+                    return Redirect("~/Work/Account");
                 }
             }
 
@@ -99,9 +99,8 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
             {
                 Subject = "Подтверждение почты",
                 From = from,
-                Body = $"<body><p>Подтвердите свою почту для аккаунта Drello по ссылке:</p> <a href='{HtmlEncoder.Default.Encode(callbackUrl)}</a>" +
-                       $"<svg id=\"eR8aXFi07Kc1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink \" viewBox=\"0 0 32 32\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\"><defs><linearGradient id=\"eR8aXFi07Kc2-fill\" x1=\"0.5\" y1=\"0\" x2=\"0.5\" y2=\"1\" spreadMethod=\"pad\" gradientUnits=\"objectBoundingBox\" gradientTransform=\"matrix(1 0 0 1 0 0)\"><stop id=\"eR8aXFi07Kc2-fill-0\" offset=\"0%\" stop-color=\"rgb(173,255,47)\"/><stop id=\"eR8aXFi07Kc2-fill-1\" offset=\"100%\" stop-color=\"rgb(47,255,255)\"/></linearGradient></defs><rect id=\"eR8aXFi07Kc2\" width=\"32\" height=\"32\" rx=\"3\" ry=\"3\" fill=\"url(#eR8aXFi07Kc2-fill)\" stroke=\"none\" stroke-width=\"0\"/><rect id=\"eR8aXFi07Kc3\" width=\"10.998895\" height=\"26.042545\" rx=\"1\" ry=\"1\" transform=\"matrix(1 0 0 1 2.982107 3.049951)\" fill=\"rgb(255,255,255)\" stroke=\"none\" stroke-width=\"0\"/><rect id=\"eR8aXFi07Kc4\" width=\"11.56658\" height=\"17.030546\" rx=\"1\" ry=\"1\" transform=\"matrix(0.92638 0 0 1 17.883837 3.049951)\" fill=\"rgb(255,255,255)\" stroke=\"none\" stroke-width=\"0\"/></svg>" +
-                       $"</body>",
+                Body = $"Подтвердите свою почту для аккаунта Drello по ссылке: {HtmlEncoder.Default.Encode(callbackUrl)}",
+               
                 IsBodyHtml = true
             };
 

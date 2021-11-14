@@ -72,7 +72,7 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
             await _userManager.ResetPasswordAsync(user, token, Input.Password);
             await _signInManager.SignInAsync(user, isPersistent: true);
 
-            return Redirect("~/Work/Workspace");
+            return Redirect("~/Work/Account");
         }
     }
 }
