@@ -22,7 +22,7 @@ namespace ASP_Trello_Identity.Controllers
         {
             _logger = logger;
             _signInManager = signInManager;
-            //_signInManager.SignOutAsync();
+            _signInManager.SignOutAsync();
         }
 
         public IActionResult Index()

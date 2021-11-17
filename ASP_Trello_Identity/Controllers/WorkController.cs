@@ -8,11 +8,6 @@ namespace ASP_Trello_Identity.Controllers
 {
     public class WorkController : Controller
     {
-        public IActionResult Account()
-        {
-            return View();
-        }
-
         public IActionResult Workspace()
         {
             return View();

@@ -13,10 +13,10 @@
         <div class="container text-center">
             <label class="headLabel mb-4">Вход в Drello</label>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Введите адрес электронной почты">
+                <input asp-for="Input.Email" type="text" class="form-control" placeholder="Введите адрес электронной почты">
             </div>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Введите пароль">
+                <input asp-for="Input.Password" type="password" class="form-control" placeholder="Введите пароль">
             </div>
             <button type="submit" class="btn btn-success" style="width: 100%">Войти</button>
             <hr />

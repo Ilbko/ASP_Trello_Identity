@@ -69,7 +69,14 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, true, lockoutOnFailure: false);
+
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user == null)
+                {
+                    return NotFound($"Пользователь не найден.");
+                }
+
+                var result = await _signInManager.PasswordSignInAsync(user, Input.Password, true, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     return Redirect("~/Work/Account");
