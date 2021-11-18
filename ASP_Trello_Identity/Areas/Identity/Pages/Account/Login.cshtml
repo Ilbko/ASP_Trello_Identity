@@ -7,24 +7,67 @@
 }
 
 <link href="~/css/authStyle.css" rel="stylesheet" />
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
 
 <body>
-    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-        <div class="container text-center">
-            <label class="headLabel mb-4">Вход в Drello</label>
-            <div class="input-group mb-3">
-                <input asp-for="Input.Email" type="text" class="form-control" placeholder="Введите адрес электронной почты">
-            </div>
-            <div class="input-group mb-3">
-                <input asp-for="Input.Password" type="password" class="form-control" placeholder="Введите пароль">
-            </div>
-            <button type="submit" class="btn btn-success" style="width: 100%">Войти</button>
-            <hr />
-            <a class="redirectLink mb-2" href="@Url.Action("Identity/Account/Register", "")">Зарегистрировать аккаунт</a>
+    @*<form asp-route-returnUrl="@Model.ReturnUrl" method="post">*@
+    <div id="containerDiv" class="container text-center">
+        <label class="headLabel mb-4">Вход в Drello</label>
+        <div class="input-group mb-3">
+            <input id="emailInput" @*asp-for="Input.Email"*@ type="text" class="form-control" placeholder="Введите адрес электронной почты">
         </div>
-    </form>
+        <div class="input-group mb-3">
+            <input id="passwordInput" @*asp-for="Input.Password"*@ type="password" class="form-control" placeholder="Введите пароль">
+        </div>
+        @*<button type="submit" class="btn btn-success" style="width: 100%">Войти</button>*@
+        <button OnClick="login()" class="btn btn-success" style="width: 100%">Войти</button>
+        <hr />
+        <a class="redirectLink mb-2" href="@Url.Action("Identity/Account/Register", "")">Зарегистрировать аккаунт</a>
+    </div>
+    @*</form>*@
 </body>
 
-@*@section Scripts {
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
-}*@
+}
+
+<script>
+    function login() {
+        $.ajax({
+            type: "POST",
+            url: '/API/Token',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({
+                Email : $("#emailInput").val(),
+                Password : $("#passwordInput").val()
+            }),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            success: function (result) {
+                if (result.success) {
+                    sessionStorage.setItem("accessToken", result.response.access_token);
+                    window.location.href = '@Url.Action("Workspace", "Work")';
+                }
+                else {
+                    $("#containerDiv").append(
+                        '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                        'Неудачная попытка логина.' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                        '<span aria-hidden="true">&times;</span></button>' +
+                        '</div>'
+                    );
+
+                    $("#emailInput").val("");
+                    $("#passwordInput").val("");
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                alert("Fatal error!");
+            }
+        });
+    }
+</script>

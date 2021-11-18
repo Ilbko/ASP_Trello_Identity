@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using ASP_Trello_Identity.Data;
+using System.Text.Json;
+using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
 {
@@ -79,7 +82,7 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(user, Input.Password, true, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return Redirect("~/Work/Account");
+                    return Redirect("~/Work/Workspace");
                 }
                 if (result.RequiresTwoFactor)
                 {

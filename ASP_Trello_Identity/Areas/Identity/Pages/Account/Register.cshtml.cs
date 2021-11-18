@@ -78,7 +78,7 @@ namespace ASP_Trello_Identity.Areas.Identity.Pages.Account
                     SendEmail(Input.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return Redirect("~/Work/Account");
+                    return Redirect("~/Work/Workspace");
                 }
             }
 
